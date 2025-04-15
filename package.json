@@ -1,0 +1,14 @@
+{
+  "name": "mern-chat-app",
+  "version": "1.0.0",
+  "description": "MERN Stack Chat Application",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "install-all": "npm install && cd public && npm install && cd server && npm install"
+  },
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "path": "^0.12.7"
+  }
+}
