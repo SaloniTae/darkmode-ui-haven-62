@@ -16,9 +16,33 @@ const colors = {
 
 console.log(`${colors.warning}🚀 Starting MERN Chat Application...${colors.reset}`);
 
+// Check if we're in the dev-server environment
+const isDevServer = process.cwd() === '/dev-server';
+
 // Check if package.json exists
-if (!fs.existsSync('./package.json')) {
+if (!fs.existsSync('./package.json') && !isDevServer) {
   console.error(`${colors.error}Error: package.json not found in the root directory${colors.reset}`);
+  console.error(`${colors.warning}Please create a package.json file in the root directory with the following content:${colors.reset}`);
+  console.error(`
+{
+  "name": "mern-chat-app",
+  "version": "1.0.0",
+  "description": "MERN Stack Chat Application",
+  "main": "index.js",
+  "scripts": {
+    "start": "node start.js",
+    "dev": "vite",
+    "install-all": "npm install && cd public && npm install && cd ../public/server && npm install"
+  },
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "fs": "0.0.1-security",
+    "path": "^0.12.7",
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.0.10"
+  }
+}
+  `);
   process.exit(1);
 }
 

@@ -14,12 +14,17 @@ const colors = {
 
 console.log(`${colors.warning}🚀 Starting MERN Chat Application...${colors.reset}`);
 
-// Check for package.json in root
-const rootPackageJsonPath = path.join(__dirname, 'package.json');
-if (!fs.existsSync(rootPackageJsonPath)) {
-  console.error(`${colors.error}Error: Root package.json not found at ${rootPackageJsonPath}${colors.reset}`);
-  console.error(`${colors.warning}Please create a package.json file in the root directory with the following content:${colors.reset}`);
-  console.error(`
+// Check if we're in the dev-server environment
+const isDevServer = process.cwd() === '/dev-server';
+
+// Skip package.json check in dev-server environment
+if (!isDevServer) {
+  // Check for package.json in root
+  const rootPackageJsonPath = path.join(__dirname, 'package.json');
+  if (!fs.existsSync(rootPackageJsonPath)) {
+    console.error(`${colors.error}Error: Root package.json not found at ${rootPackageJsonPath}${colors.reset}`);
+    console.error(`${colors.warning}Please create a package.json file in the root directory with the following content:${colors.reset}`);
+    console.error(`
 {
   "name": "mern-chat-app",
   "version": "1.0.0",
@@ -28,7 +33,7 @@ if (!fs.existsSync(rootPackageJsonPath)) {
   "scripts": {
     "start": "node start.js",
     "dev": "vite",
-    "install-all": "npm install && cd public && npm install && cd server && npm install"
+    "install-all": "npm install && cd public && npm install && cd ../public/server && npm install"
   },
   "dependencies": {
     "child_process": "^1.0.2",
@@ -39,7 +44,8 @@ if (!fs.existsSync(rootPackageJsonPath)) {
   }
 }
   `);
-  process.exit(1);
+    process.exit(1);
+  }
 }
 
 // Start the backend server
