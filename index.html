@@ -5,15 +5,22 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta name="description" content="MERN Chat Application" />
+    <meta
+      name="description"
+      content="MERN Chat Application"
+    />
     <title>MERN Chat App</title>
+    <script type="module">
+      // This script redirects to the React application
+      window.location.href = '/public';
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root">
       <!-- Your app will load here -->
+      <p>Loading application, please wait...</p>
     </div>
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
