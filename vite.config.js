@@ -15,5 +15,9 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
+  },
+  // Add this section to define the dev script
+  scripts: {
+    dev: "vite"
   }
 });

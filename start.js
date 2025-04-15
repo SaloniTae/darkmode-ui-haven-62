@@ -8,10 +8,39 @@ const colors = {
   frontend: '\x1b[36m', // Cyan
   backend: '\x1b[32m',  // Green
   error: '\x1b[31m',    // Red
+  warning: '\x1b[33m',  // Yellow
   reset: '\x1b[0m'      // Reset
 };
 
-console.log('\x1b[33m%s\x1b[0m', '🚀 Starting MERN Chat Application...');
+console.log(`${colors.warning}🚀 Starting MERN Chat Application...${colors.reset}`);
+
+// Check for package.json in root
+const rootPackageJsonPath = path.join(__dirname, 'package.json');
+if (!fs.existsSync(rootPackageJsonPath)) {
+  console.error(`${colors.error}Error: Root package.json not found at ${rootPackageJsonPath}${colors.reset}`);
+  console.error(`${colors.warning}Please create a package.json file in the root directory with the following content:${colors.reset}`);
+  console.error(`
+{
+  "name": "mern-chat-app",
+  "version": "1.0.0",
+  "description": "MERN Stack Chat Application",
+  "main": "index.js",
+  "scripts": {
+    "start": "node start.js",
+    "dev": "vite",
+    "install-all": "npm install && cd public && npm install && cd server && npm install"
+  },
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "fs": "0.0.1-security",
+    "path": "^0.12.7",
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.0.10"
+  }
+}
+  `);
+  process.exit(1);
+}
 
 // Start the backend server
 const backendPath = path.join(__dirname, 'public', 'server');
@@ -22,7 +51,7 @@ if (!backendExists) {
   process.exit(1);
 }
 
-console.log('\x1b[33m%s\x1b[0m', '🔧 Starting backend server...');
+console.log(`${colors.warning}🔧 Starting backend server...${colors.reset}`);
 const backend = spawn('node', ['index.js'], { 
   cwd: backendPath,
   shell: true,
@@ -38,7 +67,7 @@ backend.stderr.on('data', (data) => {
 });
 
 // Start the frontend server after a delay to ensure backend is up
-console.log('\x1b[33m%s\x1b[0m', '🔧 Starting frontend server...');
+console.log(`${colors.warning}🔧 Starting frontend server...${colors.reset}`);
 setTimeout(() => {
   const frontendPath = path.join(__dirname, 'public');
   const frontendExists = fs.existsSync(frontendPath);
@@ -65,7 +94,7 @@ setTimeout(() => {
 
 // Handle process termination
 process.on('SIGINT', () => {
-  console.log('\x1b[33m%s\x1b[0m', '🛑 Shutting down servers...');
+  console.log(`${colors.warning}🛑 Shutting down servers...${colors.reset}`);
   backend.kill();
   process.exit();
 });

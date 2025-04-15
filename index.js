@@ -3,32 +3,35 @@
 // It will start both the frontend and backend servers
 const { spawn } = require('child_process');
 const path = require('path');
+const fs = require('fs');
 
-console.log('🚀 Starting MERN Chat Application...');
-console.log('📂 Starting backend server...');
+// Colors for console output
+const colors = {
+  frontend: '\x1b[36m', // Cyan
+  backend: '\x1b[32m',  // Green
+  error: '\x1b[31m',    // Red
+  warning: '\x1b[33m',  // Yellow
+  reset: '\x1b[0m'      // Reset
+};
 
-// Start the backend server
-const backendProcess = spawn('node', ['index.js'], {
-  cwd: path.join(__dirname, 'public', 'server'),
-  stdio: 'inherit',
-  shell: true
-});
+console.log(`${colors.warning}🚀 Starting MERN Chat Application...${colors.reset}`);
 
-// Start the frontend server
-console.log('📂 Starting frontend server...');
-const frontendProcess = spawn('npm', ['start'], {
-  cwd: path.join(__dirname, 'public'),
+// Check if package.json exists
+if (!fs.existsSync('./package.json')) {
+  console.error(`${colors.error}Error: package.json not found in the root directory${colors.reset}`);
+  process.exit(1);
+}
+
+// Use start.js to start both servers
+console.log(`${colors.warning}🔧 Starting servers with start.js...${colors.reset}`);
+const startProcess = spawn('node', ['start.js'], {
   stdio: 'inherit',
   shell: true
 });
 
 // Handle process termination
-const handleExit = () => {
-  console.log('🛑 Shutting down servers...');
-  backendProcess.kill();
-  frontendProcess.kill();
+process.on('SIGINT', () => {
+  console.log(`${colors.warning}🛑 Shutting down servers...${colors.reset}`);
+  startProcess.kill();
   process.exit(0);
-};
-
-process.on('SIGINT', handleExit);
-process.on('SIGTERM', handleExit);
+});
